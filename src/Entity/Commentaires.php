@@ -30,6 +30,11 @@ class Commentaires
     #[ORM\JoinColumn(nullable: false)]
     private ?Articles $article = null;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')); // Met automatiquement la date du jour
+    }
+
     public function getId(): ?int
     {
         return $this->id;

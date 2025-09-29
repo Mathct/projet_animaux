@@ -37,7 +37,9 @@ class Articles
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')); // Met automatiquement la date du jour
     }
+
 
     public function getId(): ?int
     {

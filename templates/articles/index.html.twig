@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Articles index{% endblock %}
+
+{% block body %}
+    <h1>Articles sur les animaux</h1>
+
+    <div><a href="{{ path('app_articles_new') }}"><button>Créer un article</button></a></div>
+
+        {% for article in articles %}
+
+                <div>{{ article.title }}</div>
+                <div>Date de création: {{ article.createdAt ? article.createdAt|date('Y-m-d H:i:s') : '' }}</div>
+                <div><span>Nombre de commentaires:</span> <span>Note:</span></div>
+              
+                    <div><a href="{{ path('app_articles_show', {'id': article.id}) }}"><button>Lire</button></a>
+                    <a href="{{ path('app_articles_edit', {'id': article.id}) }}"><button>Modifer</button></a></div>
+                <br>
+        {% else %}
+        <div>Aucun article créé</div>
+        {% endfor %}
+
+    
+{% endblock %}
