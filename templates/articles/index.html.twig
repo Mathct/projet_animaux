@@ -11,7 +11,17 @@
 
                 <div>{{ article.title }}</div>
                 <div>Date de création: {{ article.createdAt ? article.createdAt|date('Y-m-d H:i:s') : '' }}</div>
-                <div><span>Nombre de commentaires:</span> <span>Note:</span></div>
+                <div><span>Nombre de commentaires: {{ article.commentaires|length }} </span> 
+                <span>Note: 
+                    {% if article.commentaires|length > 0 %}
+                    {% set total = article.commentaires|map(c => c.notation)|reduce((carry, v) => carry + v) %}
+                    {% set moyenne = (total / article.commentaires|length)|round(1) %}
+                    {{ moyenne|number_format(moyenne is same as(moyenne|round(0)) ? 0 : 1) }}/5
+                    {% else %}
+                        -
+                    {% endif %}
+                </span>
+                </div>
               
                     <div><a href="{{ path('app_articles_show', {'id': article.id}) }}"><button>Lire</button></a>
                     <a href="{{ path('app_articles_edit', {'id': article.id}) }}"><button>Modifer</button></a></div>

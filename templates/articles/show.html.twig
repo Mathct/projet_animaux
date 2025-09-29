@@ -11,7 +11,15 @@
 
     <div>{{ article.img }}</div>
 
-    <div>Note:</div>
+    <div>Note: 
+                {% if article.commentaires|length > 0 %}
+                {% set total = article.commentaires|map(c => c.notation)|reduce((carry, v) => carry + v) %}
+                {% set moyenne = (total / article.commentaires|length)|round(1) %}
+                {{ moyenne|number_format(moyenne is same as(moyenne|round(0)) ? 0 : 1) }}/5
+                {% else %}
+                    -
+                {% endif %}
+        </div>
 
 
     <div><a href="{{ path('app_articles_index') }}">Retour aux articles</a></div>
