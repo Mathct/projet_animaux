@@ -71,6 +71,17 @@ final class ArticlesController extends AbstractController
         $oldimage = $article->getImg();
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $file = $form->get('img')->getData();
+
+            if($file)
+            {
+               $newName = time() . '-' . $file->getClientOriginalName();
+               $article->setImg($newName);
+               $file->move($this->getParameter('article_dir'), $newName);
+              
+            }
+
             $entityManager->flush();
             unlink($this->getParameter('article_dir').'/'.$oldimage);
 
