@@ -68,8 +68,11 @@ final class ArticlesController extends AbstractController
         $form = $this->createForm(ArticlesType::class, $article);
         $form->handleRequest($request);
 
+        $oldimage = $article->getImg();
+
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
+            unlink($this->getParameter('article_dir').'/'.$oldimage);
 
             return $this->redirectToRoute('app_articles_show', ['id' => $id], Response::HTTP_SEE_OTHER);
         }
@@ -83,9 +86,12 @@ final class ArticlesController extends AbstractController
     #[Route('/{id}', name: 'app_articles_delete', methods: ['POST'])]
     public function delete(Request $request, Articles $article, EntityManagerInterface $entityManager): Response
     {
+        $oldimage = $article->getImg();
+
         if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($article);
             $entityManager->flush();
+            unlink($this->getParameter('article_dir').'/'.$oldimage);
         }
 
         return $this->redirectToRoute('app_articles_index', [], Response::HTTP_SEE_OTHER);
