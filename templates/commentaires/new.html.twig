@@ -3,9 +3,9 @@
 {% block title %}New Commentaires{% endblock %}
 
 {% block body %}
-    <h1>Create new Commentaires</h1>
+    <h1>Poster un nouveau commentaire</h1>
 
     {{ include('commentaires/_form.html.twig') }}
 
-    <a href="{{ path('app_commentaires_index') }}">back to list</a>
+    <a href="{{ path('app_articles_show', {'id': id}) }}">Retour à l'article</a>
 {% endblock %}

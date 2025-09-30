@@ -19,7 +19,7 @@ final class CommentairesController extends AbstractController
     public function index(CommentairesRepository $commentairesRepository): Response
     {
         return $this->render('commentaires/index.html.twig', [
-            'commentaires' => $commentairesRepository->findAll(),
+            'commentaires' => $commentairesRepository->findBy([], ["createdAt" => "DESC"]),
         ]);
     }
 
@@ -49,6 +49,7 @@ final class CommentairesController extends AbstractController
         return $this->render('commentaires/new.html.twig', [
             'commentaire' => $commentaire,
             'form' => $form,
+            'id' => $id,
         ]);
     }
 
@@ -61,8 +62,10 @@ final class CommentairesController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_commentaires_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Commentaires $commentaire, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Commentaires $commentaire, EntityManagerInterface $entityManager, $id): Response
     {
+
+
         $form = $this->createForm(CommentairesType::class, $commentaire);
         $form->handleRequest($request);
 
@@ -81,11 +84,13 @@ final class CommentairesController extends AbstractController
     #[Route('/{id}', name: 'app_commentaires_delete', methods: ['POST'])]
     public function delete(Request $request, Commentaires $commentaire, EntityManagerInterface $entityManager): Response
     {
+        $articleId = $commentaire->getArticle()->getId();
+
         if ($this->isCsrfTokenValid('delete'.$commentaire->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($commentaire);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_commentaires_index', [], Response::HTTP_SEE_OTHER);
+         return $this->redirectToRoute('app_articles_show', ['id' => $articleId]);
     }
 }

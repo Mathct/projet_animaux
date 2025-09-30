@@ -24,21 +24,22 @@
 
     <div><a href="{{ path('app_articles_index') }}">Retour aux articles</a></div>
 
-    <div><a href="{{ path('app_articles_edit', {'id': article.id}) }}"><button>Modifier</button></a></div>
+    <div><a href="{{ path('app_articles_edit', {'id': article.id}) }}"><button>Modifier l'article</button></a></div>
 
     {{ include('articles/_delete_form.html.twig') }}
-
+    <br>
     <div><a href="{{ path('app_commentaires_new', {'id': article.id}) }}"><button>Poster un commentaire</button></a></div>
 
     <h2>Tous les commentaires de l'article:</h2>
-    {% for commentaire in article.commentaires %}
-        <div>{{ commentaire.name }}</div>
-        <div>Date de publication: {{commentaire.createdAt ? commentaire.createdAt|date('Y-m-d H:i:s') : '' }}</div>
-        <div>Note: {{ commentaire.notation }}/5</div>
-        <div>{{ commentaire.comment }}</div>
-        <br>
+    {% for commentaire in article.commentaires|sort((a, b) => b.createdAt <=> a.createdAt) %}
+    <div>{{ commentaire.name }}</div>
+    <div>Date de publication: {{ commentaire.createdAt ? commentaire.createdAt|date('Y-m-d H:i:s') : '' }}</div>
+    <div>Note: {{ commentaire.notation }}/5</div>
+    <div>{{ commentaire.comment }}</div>
+    <div><a href="{{ path('app_commentaires_edit', {'id': commentaire.id}) }}"><button>Modifier le commentaire</button></a></div>
+    <div>{{ include('commentaires/_delete_form.html.twig') }}</div>
+    <br>
     {% else %}
         <div>Aucun commentaire pour cet article.</div>
-    
     {% endfor %}
 {% endblock %}

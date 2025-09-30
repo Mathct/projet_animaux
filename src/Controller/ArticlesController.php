@@ -18,7 +18,7 @@ final class ArticlesController extends AbstractController
     public function index(ArticlesRepository $articlesRepository): Response
     {
         return $this->render('articles/index.html.twig', [
-            'articles' => $articlesRepository->findAll(),
+            'articles' => $articlesRepository->findBy([], ["createdAt" => "DESC"]),
         ]);
     }
 
@@ -51,7 +51,7 @@ final class ArticlesController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_articles_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Articles $article, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Articles $article, EntityManagerInterface $entityManager, $id): Response
     {
         $form = $this->createForm(ArticlesType::class, $article);
         $form->handleRequest($request);
@@ -59,7 +59,7 @@ final class ArticlesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_articles_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_articles_show', ['id' => $id], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('articles/edit.html.twig', [
