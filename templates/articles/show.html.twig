@@ -3,13 +3,20 @@
 {% block title %}Articles{% endblock %}
 
 {% block body %}
+
+    <div class="image">
+    <img src="{{ asset('uploads/' ~ article.img) }}" alt="">
+    </div>
+
+    <div><a href="{{ path('app_articles_index') }}"><button>Retour aux articles</button></a></div>
+    <br>
+
     <h1>{{ article.title }}</h1>
+    
 
     <div>Date de création: {{ article.createdAt ? article.createdAt|date('Y-m-d H:i:s') : '' }}</div>
 
     <div>{{ article.content }}</div>
-
-    <div>{{ article.img }}</div>
 
     <div>Note: 
                 {% if article.commentaires|length > 0 %}
@@ -22,7 +29,7 @@
         </div>
 
 
-    <div><a href="{{ path('app_articles_index') }}">Retour aux articles</a></div>
+    
 
     <div><a href="{{ path('app_articles_edit', {'id': article.id}) }}"><button>Modifier l'article</button></a></div>
 

@@ -65,6 +65,8 @@ final class CommentairesController extends AbstractController
     public function edit(Request $request, Commentaires $commentaire, EntityManagerInterface $entityManager, $id): Response
     {
 
+        // Récupération de l'ID de l'article lié
+        $articleId = $commentaire->getArticle()->getId();
 
         $form = $this->createForm(CommentairesType::class, $commentaire);
         $form->handleRequest($request);
@@ -72,12 +74,13 @@ final class CommentairesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_commentaires_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_articles_show', ['id' => $articleId], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('commentaires/edit.html.twig', [
             'commentaire' => $commentaire,
             'form' => $form,
+            'id' => $articleId,
         ]);
     }
 

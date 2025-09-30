@@ -7,7 +7,7 @@
 
     {{ include('commentaires/_form.html.twig', {'button_label': 'Modifier'}) }}
 
-    {# <a href="{{ path('app_articles_show', {'id': id}) }}">Retour à l'article</a> #}
+    <a href="{{ path('app_articles_show', {'id': id}) }}">Retour à l'article</a>
 
     {{ include('commentaires/_delete_form.html.twig') }}
 {% endblock %}
